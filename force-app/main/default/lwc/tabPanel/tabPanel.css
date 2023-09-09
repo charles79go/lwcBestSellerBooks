@@ -1,12 +1,51 @@
-@import 'c/lwcMainCss';
+.appContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.listPanel,
+.detailPanel {
+    width: 49.5%;
+}
 
 h1 {
-    font-size: var(--fontSizeBg2);
+    font-size: 20px;
     font-weight: 700;
 }
 
-.mainCategoryPanel,
-.mainSearchPanel {
+.mainCategoryContainer,
+.mainSearchContainer,
+.mainDetailContainer {
     min-height: 60vh;
+    width: 100%;
     padding: 10px 20px;
+    position: relative;
+    background-color: #fff;
+}
+
+.booksPanel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.errorMessage {
+    display: flex;
+    justify-content: center;
+    margin: 50px 0;
+}
+.errorMessage span{
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.spinnerContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

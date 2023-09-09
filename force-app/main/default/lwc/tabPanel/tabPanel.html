@@ -1,27 +1,65 @@
 <template>
-    <lightning-tabset variant="scoped">
-        <lightning-tab label="Categories">
-            <div class="mainCategoryPanel">
-                <h1>Top 10 books by Category</h1>
-                <lightning-combobox
-                    class="categorySelect"
-                    name="categorySelect"
-                    value={categorySelected}
-                    options={categoryOptions}
-                    onchange={categorySelectFn}
-                    placeholder="Best Seller Categories"
-                ></lightning-combobox>
+    <div class="appContainer">
+
+
+        <div class="listPanel">
+            <lightning-tabset variant="scoped">
+                <lightning-tab label="Categories">
+                    <div class="mainCategoryContainer">
+                        <h1 class="viewTitle">Top books by Category</h1>
+                        <lightning-combobox
+                            class="categorySelect"
+                            name="categorySelect"
+                            value={categorySelected}
+                            options={categoryOptions}
+                            onchange={categorySelectFn}
+                            placeholder="Best Seller Categories"
+                        ></lightning-combobox>
+        
+                        <div class="booksPanel">
+                            <template for:each={bookList} for:item="book" for:index="index">
+                                <c-book-item 
+                                    book-item={book} 
+                                    key={book.primary_isbn10}
+                                    onpreviewbook={previewBookFn}></c-book-item>
+                            </template>
+                        </div>
+        
+                        <template if:true={showListSpinner}>
+                            <div class="spinnerContainer">
+                                <lightning-spinner variant='brand' alternative-text="Loading" size="medium"></lightning-spinner>
+                            </div>
+                        </template>
+        
+                        <template if:true={hasListError}>
+                            <div class="errorMessage">
+                                <span>Error getting list of books</span>
+                            </div>
+                        </template>
+        
+                    </div>
+                </lightning-tab>
+                <lightning-tab label="Search">
+                    <div class="mainSearchContainer">
+                        <h1 class="viewTitle">Search Book Titles</h1>
+                        <lightning-input
+                            name="Search Book Titles"
+                            label=""
+                            type="search"
+                        ></lightning-input>
+                    </div>
+                </lightning-tab>
+            </lightning-tabset>
+        </div>
+
+
+
+        <div class="detailPanel">
+            <div class="mainDetailContainer">
+
             </div>
-        </lightning-tab>
-        <lightning-tab label="Search">
-            <div class="mainSearchPanel">
-                <h1>Search Book Titles</h1>
-                <lightning-input
-                    name="Search Book Titles"
-                    label=""
-                    type="search"
-                ></lightning-input>
-            </div>
-        </lightning-tab>
-    </lightning-tabset>
+        </div>
+    </div>
+
+
 </template>
