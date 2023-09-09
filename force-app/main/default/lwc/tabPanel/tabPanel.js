@@ -1,7 +1,6 @@
 import { LightningElement } from 'lwc';
 import getBookList from "@salesforce/apex/BooksCtrl.getBookList";
 
-
 export default class TabPanel extends LightningElement {
 
     categorySelected = 'childrens-middle-grade';
@@ -10,6 +9,9 @@ export default class TabPanel extends LightningElement {
 
     showListSpinner = false;
     hasListError = false;
+
+    previewUrl = "http://books.google.com/books?id=ZJuLKKpvOBYC&pg=PA314&dq=WONDER+intitle:WONDER+isbn:0375869026&hl=&cd=2&source=gbs_api&output=embed";
+    // previewUrl = "http://books.google.com/books?id=ZJuLKKpvOBYC&pg=PA314&dq=WONDER+intitle:WONDER+isbn:0375869026&hl=&cd=2&source=gbs_api";
 
     categoryOptions = [
         { label: "Advice, How-To & Miscellaneous", value: "advice-how-to-and-miscellaneous" },
@@ -35,11 +37,11 @@ export default class TabPanel extends LightningElement {
     async getBooks(category){
         try {
             this.showListSpinner = true;
-            let data = await getBookList({category});
-            data = JSON.parse(data);
-            this.bookList = data.results.books;
+            // let data = await getBookList({category});
+            // data = JSON.parse(data);
+            // this.bookList = data.results.books;
 
-            // this.bookList = this.jsonSample.results.books;
+            this.bookList = this.jsonSample.results.books;
 
             
             this.hasListError = false;
@@ -56,7 +58,7 @@ export default class TabPanel extends LightningElement {
         this.categorySelected = e.detail.value;
 
         // get the best seller list from NYT api.
-        this.getBooks(this.categorySelected);
+        // this.getBooks(this.categorySelected);
     }
 
     async previewBookFn(e){
@@ -73,9 +75,8 @@ export default class TabPanel extends LightningElement {
         let data = await response.json();
 
         console.log(JSON.stringify(data, null, 2));
+
     }
-
-
 
 
     jsonSample = {
