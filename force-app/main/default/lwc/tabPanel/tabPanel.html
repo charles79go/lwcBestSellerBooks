@@ -1,0 +1,27 @@
+<template>
+    <lightning-tabset variant="scoped">
+        <lightning-tab label="Categories">
+            <div class="mainCategoryPanel">
+                <h1>Top 10 books by Category</h1>
+                <lightning-combobox
+                    class="categorySelect"
+                    name="categorySelect"
+                    value={categorySelected}
+                    options={categoryOptions}
+                    onchange={categorySelectFn}
+                    placeholder="Best Seller Categories"
+                ></lightning-combobox>
+            </div>
+        </lightning-tab>
+        <lightning-tab label="Search">
+            <div class="mainSearchPanel">
+                <h1>Search Book Titles</h1>
+                <lightning-input
+                    name="Search Book Titles"
+                    label=""
+                    type="search"
+                ></lightning-input>
+            </div>
+        </lightning-tab>
+    </lightning-tabset>
+</template>

@@ -1,0 +1,12 @@
+@import 'c/lwcMainCss';
+
+h1 {
+    font-size: var(--fontSizeBg2);
+    font-weight: 700;
+}
+
+.mainCategoryPanel,
+.mainSearchPanel {
+    min-height: 60vh;
+    padding: 10px 20px;
+}
