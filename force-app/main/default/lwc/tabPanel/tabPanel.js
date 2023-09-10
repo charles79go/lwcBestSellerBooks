@@ -10,8 +10,20 @@ export default class TabPanel extends LightningElement {
     showListSpinner = false;
     hasListError = false;
 
-    previewUrl = "http://books.google.com/books?id=ZJuLKKpvOBYC&pg=PA314&dq=WONDER+intitle:WONDER+isbn:0375869026&hl=&cd=2&source=gbs_api&output=embed";
-    // previewUrl = "http://books.google.com/books?id=ZJuLKKpvOBYC&pg=PA314&dq=WONDER+intitle:WONDER+isbn:0375869026&hl=&cd=2&source=gbs_api";
+    showDetailSpinner = false;
+    hasDetailError = false;
+    frameReady = false;
+
+
+    // preview variables
+    previewUrl;
+    title;
+    subtitle;
+    author;
+    description;
+    imgUrl;
+
+    initDetailView;
 
     categoryOptions = [
         { label: "Advice, How-To & Miscellaneous", value: "advice-how-to-and-miscellaneous" },
@@ -37,11 +49,11 @@ export default class TabPanel extends LightningElement {
     async getBooks(category){
         try {
             this.showListSpinner = true;
-            // let data = await getBookList({category});
-            // data = JSON.parse(data);
-            // this.bookList = data.results.books;
+            let data = await getBookList({category});
+            data = JSON.parse(data);
+            this.bookList = data.results.books;
 
-            this.bookList = this.jsonSample.results.books;
+            // this.bookList = this.jsonSample.results.books;
 
             
             this.hasListError = false;
@@ -58,24 +70,58 @@ export default class TabPanel extends LightningElement {
         this.categorySelected = e.detail.value;
 
         // get the best seller list from NYT api.
-        // this.getBooks(this.categorySelected);
+        this.getBooks(this.categorySelected);
     }
 
     async previewBookFn(e){
-        console.log('>>>>>', e.detail.title);
-        console.log('>>>>>', e.detail.author);
-        console.log('>>>>>', e.detail.primary_isbn10);
+        // console.log('>>>>>', e.detail.title);
+        // console.log('>>>>>', e.detail.author);
+        // console.log('>>>>>', e.detail.primary_isbn10);
 
         let isbn = e.detail.primary_isbn10;
         let title = e.detail.title;
 
-        let url = `https://www.googleapis.com/books/v1/volumes?q=${title}+intitle:${title}+isbn:${isbn}`;       
+        // let url = `https://www.googleapis.com/books/v1/volumes?q=${title}+intitle:${title}+isbn:${isbn}`; 
+        let apiKey = 'AIzaSyBWOMxgGbElQnmn-T3VgIBexJJQHjjsOvc';
+        let url = `https://www.googleapis.com/books/v1/volumes?q=${title}+intitle:${title}+isbn:${isbn}&maxResults=20&printType=books&key=${apiKey}`;      
 
-        let response = await fetch(url);
-        let data = await response.json();
+        try {
+            this.showDetailSpinner = true;
+            let response = await fetch(url);
+            let data = await response.json();
+            //
+            let bookProcessResult = this.processDetails(data);
+            if(bookProcessResult === 'no data') {
+                this.frameReady = false;
+                this.hasDetailError = true;
+                this.showDetailSpinner = false;
+                return;
+            }
+            //
+            this.showDetailSpinner = false;
+            this.hasDetailError = false;
+        } catch(e) {
+            console.log('error', e);
+            this.frameReady = false;
+            this.hasDetailError = true;
+            this.showDetailSpinner = false;
+        }
+    }
 
-        console.log(JSON.stringify(data, null, 2));
-
+    processDetails(response){
+        // response coming from google books api
+        if(response.items.length === 0) return 'no data';
+        // if there is data, get the first one only.
+        let bookData = response.items[0];
+        this.title = bookData.volumeInfo.title;
+        this.subtitle = bookData.volumeInfo.title;
+        this.author = bookData.volumeInfo.authors.join(', ');
+        this.description = bookData.volumeInfo.description;
+        this.imgUrl = bookData.volumeInfo.imageLinks.thumbnail;
+        this.previewUrl = `${bookData.volumeInfo.previewLink}&output=embed`;
+        this.frameReady = this.previewUrl.includes('frontcover');
+        this.initDetailView = true;
+        return 'success';
     }
 
 

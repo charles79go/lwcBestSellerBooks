@@ -8,6 +8,17 @@
     width: 49.5%;
 }
 
+.detailPanel {
+    height: 5000px;
+    position: relative;
+}
+
+.mainDetailContainer {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}
+
 h1 {
     font-size: 20px;
     font-weight: 700;
@@ -29,6 +40,38 @@ h1 {
     justify-content: space-evenly;
 }
 
+.bookDetails {
+    display: flex;
+    font-size: 16px;
+    margin: 20px 0 30px 0;
+}
+    .bookDetails .imgContainer {
+        width: 130px;
+        height: 200px;
+        flex-shrink: 0;
+        margin-right: 20px
+    }
+        .img {
+            aspect-ratio: .65 / 1;
+            width: 100%;
+        }
+    .textInfoContainer {
+        flex-grow: 1;
+    }
+        .detailTitle {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .detailAuthor {
+            margin-bottom: 10px;
+        }
+        
+
+/* .frameContainer {
+    height: 80vh;
+} */
+
 .errorMessage {
     display: flex;
     justify-content: center;
@@ -48,4 +91,11 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.noPreview {
+    padding: 20px;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
 }
