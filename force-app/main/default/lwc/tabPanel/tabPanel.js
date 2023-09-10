@@ -129,7 +129,7 @@ export default class TabPanel extends LightningElement {
         this.subtitle = bookData.volumeInfo.title;
         this.author = bookData.volumeInfo.authors.join(', ');
         this.description = bookData.volumeInfo.description;
-        this.imgUrl = bookData.volumeInfo.imageLinks.thumbnail;
+        this.imgUrl = bookData?.volumeInfo?.imageLinks?.thumbnail;
         this.previewUrl = `${bookData.volumeInfo.previewLink}&output=embed`;
         //
         // only show the iframe if there is a preview for it.
@@ -170,7 +170,7 @@ export default class TabPanel extends LightningElement {
         let data = JSON.parse(response);
         let books = data.items.map((book) => {
             let author =
-                book.volumeInfo.authors.length > 0
+                book?.volumeInfo?.authors?.length > 0
                     ? book.volumeInfo.authors[0]
                     : '';
             let isbn;
@@ -178,8 +178,8 @@ export default class TabPanel extends LightningElement {
                 if (isbnObj.type === 'ISBN_10') isbn = isbnObj.identifier;
             });
             return {
-                book_image: book.volumeInfo.imageLinks.thumbnail,
-                title: book.volumeInfo.title,
+                book_image: book?.volumeInfo?.imageLinks?.thumbnail,
+                title: book?.volumeInfo?.title,
                 author,
                 primary_isbn10: isbn
             };

@@ -1,12 +1,11 @@
 <template>
     <div class="appContainer">
 
-
         <div class="listPanel">
             <lightning-tabset variant="scoped">
                 <lightning-tab label="Categories">
                     <div class="mainCategoryContainer">
-                        <h1 class="viewTitle">New York Times Best Sellers by Category</h1>
+                        <h1 class="viewTitle">The New York Times Best Sellers by Category</h1>
                         <lightning-combobox
                             class="categorySelect"
                             name="categorySelect"
@@ -15,30 +14,31 @@
                             onchange={categorySelectFn}
                             placeholder="Best Seller Categories"
                         ></lightning-combobox>
-        
-                        <div class="booksPanel">
-                            <template for:each={bookList} for:item="book" for:index="index">
-                                <c-book-item 
-                                    book-item={book} 
-                                    key={book.primary_isbn10}
-                                    onpreviewbook={previewBookFn}></c-book-item>
-                            </template>
-                        </div>
+
+                        <template lwc:if={hasListError}>
+                            <div class="errorMessage">
+                                <span>Error getting list of books</span>
+                            </div>
+                        </template>
+                        <template lwc:else>
+                            <div class="booksPanel">
+                                <template for:each={bookList} for:item="book" for:index="index">
+                                    <c-book-item 
+                                        book-item={book} 
+                                        key={book.primary_isbn10}
+                                        onpreviewbook={previewBookFn}></c-book-item>
+                                </template>
+                            </div>
+                        </template>
         
                         <template if:true={showListSpinner}>
                             <div class="spinnerContainer">
                                 <lightning-spinner variant='brand' alternative-text="Loading" size="medium"></lightning-spinner>
                             </div>
                         </template>
-        
-                        <template if:true={hasListError}>
-                            <div class="errorMessage">
-                                <span>Error getting list of books</span>
-                            </div>
-                        </template>
-        
                     </div>
                 </lightning-tab>
+
                 <lightning-tab label="Search">
                     <div class="mainSearchContainer">
                         <h1 class="viewTitle">Search Book Titles</h1>
@@ -50,14 +50,21 @@
                             onkeyup={searchInputFn}
                         ></lightning-input>
 
-                        <div class="booksPanel">
-                            <template for:each={searchResults} for:item="book" for:index="index">
-                                <c-book-item 
-                                    book-item={book} 
-                                    key={book.primary_isbn10}
-                                    onpreviewbook={previewBookFn}></c-book-item>
-                            </template>
-                        </div>
+                        <template lwc:if={hasSearchError}>
+                            <div class="errorMessage">
+                                <span>No results</span>
+                            </div>
+                        </template>
+                        <template lwc:else >
+                            <div class="booksPanel">
+                                <template for:each={searchResults} for:item="book" for:index="index">
+                                    <c-book-item 
+                                        book-item={book} 
+                                        key={book.primary_isbn10}
+                                        onpreviewbook={previewBookFn}></c-book-item>
+                                </template>
+                            </div>
+                        </template>
         
                         <template if:true={showSearchSpinner}>
                             <div class="spinnerContainer">
@@ -65,21 +72,13 @@
                             </div>
                         </template>
         
-                        <template if:true={hasSearchError}>
-                            <div class="errorMessage">
-                                <span>No results</span>
-                            </div>
-                        </template>
                     </div>
                 </lightning-tab>
             </lightning-tabset>
         </div>
 
-
-
         <div class="detailPanel">
             <div class="mainDetailContainer" if:true={initDetailView}>
-
                 
                 <template lwc:if={hasDetailError}>
 
