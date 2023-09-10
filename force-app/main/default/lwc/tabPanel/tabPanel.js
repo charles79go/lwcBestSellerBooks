@@ -40,7 +40,7 @@ export default class TabPanel extends LightningElement {
         { label: "Children's Middle Grade", value: 'childrens-middle-grade' },
         {
             label: 'Combined Print and Ebook Fiction',
-            value: 'combined-print-and-e-book-nonfiction'
+            value: 'combined-print-and-e-book-fiction'
         },
         { label: 'Culture', value: 'culture' },
         { label: 'Education', value: 'education' },
