@@ -89,6 +89,8 @@ export default class TabPanel extends LightningElement {
         try {
             this.showDetailSpinner = true;
             //
+            this.resetPreview();
+            //
             // get book details from google books api
             let response = await getBookDetails({
                 title: evt.detail.title,
@@ -184,5 +186,14 @@ export default class TabPanel extends LightningElement {
         });
 
         return books;
+    }
+
+    resetPreview(){
+        this.previewUrl = '';
+        this.title = '';
+        this.subtitle = '';
+        this.author = '';
+        this.description = '';
+        this.imgUrl = '';
     }
 }

@@ -79,36 +79,47 @@
 
         <div class="detailPanel">
             <div class="mainDetailContainer" if:true={initDetailView}>
-                <div class="bookDetails">
-                    <div class="imgContainer">
-                        <img class="img" src={imgUrl} />
-                    </div>
-                    <div class="textInfoContainer">
-                        <div class="detailTitle">{title}</div>
-                        <div class="detailAuthor">{author}</div>
-                        <div class="detailDescription">{description}</div>
-                    </div>
-                </div>
 
-                <template lwc:if={frameReady}>
-                    <div class="frameContainer">
-                        <iframe
-                            class="previewFrame"
-                            src={previewUrl}
-                            height="600px"
-                            width="100%"
-                            referrerpolicy="no-referrer"
-                            sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-                            title="bookPreviewFrame"
-                        ></iframe>
+                
+                <template lwc:if={hasDetailError}>
+
+                    <div class="errorMessage">
+                        <span>Book details not available</span>
                     </div>
+
                 </template>
                 <template lwc:else>
-                    <div class="noPreview">
-                        <span>Preview not available</span>
-                    </div>
-                </template>
 
+                    <div class="bookDetails">
+                        <div class="imgContainer">
+                            <img class="img" src={imgUrl} />
+                        </div>
+                        <div class="textInfoContainer">
+                            <div class="detailTitle">{title}</div>
+                            <div class="detailAuthor">{author}</div>
+                            <div class="detailDescription">{description}</div>
+                        </div>
+                    </div>
+    
+                    <template lwc:if={frameReady}>
+                        <div class="frameContainer">
+                            <iframe
+                                class="previewFrame"
+                                src={previewUrl}
+                                height="600px"
+                                width="100%"
+                                referrerpolicy="no-referrer"
+                                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                                title="bookPreviewFrame"
+                            ></iframe>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                        <div class="noPreview">
+                            <span>Preview not available</span>
+                        </div>
+                    </template>
+                </template>
 
                 <template if:true={showDetailSpinner}>
                     <div class="spinnerContainer">
@@ -116,11 +127,6 @@
                     </div>
                 </template>
 
-                <template if:true={hasDetailError}>
-                    <div class="errorMessage">
-                        <span>Book details not available</span>
-                    </div>
-                </template>
             </div>
         </div>
     </div>
