@@ -6,7 +6,7 @@
             <lightning-tabset variant="scoped">
                 <lightning-tab label="Categories">
                     <div class="mainCategoryContainer">
-                        <h1 class="viewTitle">Top books by Category</h1>
+                        <h1 class="viewTitle">New York Times Best Sellers by Category</h1>
                         <lightning-combobox
                             class="categorySelect"
                             name="categorySelect"
@@ -46,7 +46,30 @@
                             name="Search Book Titles"
                             label=""
                             type="search"
+                            lwc:ref="searchInput"
+                            onkeyup={searchInputFn}
                         ></lightning-input>
+
+                        <div class="booksPanel">
+                            <template for:each={searchResults} for:item="book" for:index="index">
+                                <c-book-item 
+                                    book-item={book} 
+                                    key={book.primary_isbn10}
+                                    onpreviewbook={previewBookFn}></c-book-item>
+                            </template>
+                        </div>
+        
+                        <template if:true={showSearchSpinner}>
+                            <div class="spinnerContainer">
+                                <lightning-spinner variant='brand' alternative-text="Loading" size="medium"></lightning-spinner>
+                            </div>
+                        </template>
+        
+                        <template if:true={hasSearchError}>
+                            <div class="errorMessage">
+                                <span>No results</span>
+                            </div>
+                        </template>
                     </div>
                 </lightning-tab>
             </lightning-tabset>
