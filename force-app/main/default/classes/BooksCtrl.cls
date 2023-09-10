@@ -1,13 +1,20 @@
 public with sharing class BooksCtrl {
-
     @AuraEnabled
-    public static string getBookList(String category){
+    public static String getBookList(String category) {
         try {
+            // query the NY Times apiKey from custom metadata.
+            ApiKey__mdt nytimes = [
+                SELECT Key__c
+                FROM ApiKey__mdt
+                WHERE DeveloperName = 'NyTimesApiKey'
+                LIMIT 1
+            ];
 
-            // query the apiKey from custom metadata.
-            ApiKey__mdt nytimes = [select Key__c from ApiKey__mdt where DeveloperName = 'NyTimesApiKey'];
-
-            String url = 'https://api.nytimes.com/svc/books/v3/lists/current/'+ category + '.json?api-key=' + nytimes.Key__c;
+            String url =
+                'https://api.nytimes.com/svc/books/v3/lists/current/' +
+                category +
+                '.json?api-key=' +
+                nytimes.Key__c;
 
             HttpRequest req = new HttpRequest();
             Http http = new Http();
@@ -16,13 +23,50 @@ public with sharing class BooksCtrl {
 
             HttpResponse response = http.send(req);
 
-            // return the response body whether it is status 200 or not.  
+            // return the response body whether it is status 200 or not.
             // let the lwc do the error handling.
             return response.getBody();
-           
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
     }
 
+    @AuraEnabled
+    public static String getBookDetails(String title, String isbn) {
+        try {
+            // query the googleBooks apiKey from custom metadata.
+            ApiKey__mdt googleBooksApi = [
+                SELECT Key__c
+                FROM ApiKey__mdt
+                WHERE DeveloperName = 'GoogleBooksApiKey'
+                LIMIT 1
+            ];
+
+            // title can hava a space so it needs to be encoded
+            title = EncodingUtil.URLENCODE(title, 'UTF-8');
+
+            String url =
+                'https://www.googleapis.com/books/v1/volumes?q=' +
+                title +
+                '+intitle:' +
+                title +
+                '+isbn:' +
+                isbn +
+                '&maxResults=20&printType=books&key=' +
+                googleBooksApi.Key__c;
+
+            HttpRequest req = new HttpRequest();
+            Http http = new Http();
+            req.setMethod('GET');
+            req.setEndpoint(url);
+
+            HttpResponse response = http.send(req);
+
+            // return the response body whether it is status 200 or not.
+            // let the lwc do the error handling.
+            return response.getBody();
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
 }

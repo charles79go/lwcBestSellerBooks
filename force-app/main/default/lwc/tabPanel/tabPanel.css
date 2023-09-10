@@ -94,8 +94,13 @@ h1 {
 }
 
 .noPreview {
-    padding: 20px;
+    padding: 10px;
+    margin-bottom: 10px;
     font-size: 16px;
     display: flex;
     justify-content: center;
+    color: #ffa500;
+    border: 1px solid #ffa500;
+    font-size: 16px;
+    font-weight: 700;
 }
