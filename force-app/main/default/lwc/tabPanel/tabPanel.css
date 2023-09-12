@@ -8,17 +8,6 @@
     width: 49.5%;
 }
 
-.detailPanel {
-    height: 5000px;
-    position: relative;
-}
-
-.mainDetailContainer {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-}
-
 h1 {
     font-size: 20px;
     font-weight: 700;
